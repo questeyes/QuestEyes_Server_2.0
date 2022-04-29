@@ -8,7 +8,6 @@ on:
 
 jobs:
   win64:
-
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -27,7 +26,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: QuestEyes_Server.exe (Win-x64)
+        name: QuestEyes_Server.exe (win-x64)
         path: package/win-x64/QuestEyes_Server.exe
         
   win86:
@@ -49,7 +48,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: QuestEyes_Server.exe (Win-x86)
+        name: QuestEyes_Server.exe (win-x86)
         path: package/win-x86/QuestEyes_Server.exe
         
   linux:
@@ -71,7 +70,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: QuestEyes_Server (Linux-x64)
+        name: QuestEyes_Server (linux-x64)
         path: package/linux/
 
   macOS:
