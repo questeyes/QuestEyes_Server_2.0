@@ -23,7 +23,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet publish QuestEyes_Server.csproj -f net6.0 -o package/win-x64 -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+      run: dotnet publish QuestEyes_Server/QuestEyes_Server.csproj -f net6.0 -o package/win-x64 -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Upload build artifacts
