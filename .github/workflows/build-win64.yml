@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  win64:
 
     runs-on: ubuntu-latest
     permissions:
@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Build
-      run: dotnet publish QuestEyes_Server/QuestEyes_Server.csproj -f net6.0 -o package/win-x64 -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+      run: dotnet publish --self-contained QuestEyes_Server/QuestEyes_Server.csproj -f net6.0 -o package/win-x64 -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Upload build artifacts
@@ -29,3 +29,25 @@ jobs:
       with:
         name: QuestEyes_Server.exe (Win-x64)
         path: package/win-x64/QuestEyes_Server.exe
+        
+  win32:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Build
+      run: dotnet publish --self-contained QuestEyes_Server/QuestEyes_Server.csproj -f net6.0 -o package/win-x32 -c Release -r win-x32 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: QuestEyes_Server.exe (Win-x32)
+        path: package/win-x32/QuestEyes_Server.exe
