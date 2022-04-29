@@ -20,8 +20,6 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore
     - name: Build
       run: dotnet publish QuestEyes_Server/QuestEyes_Server.csproj -f net6.0 -o package/win-x64 -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
     - name: Test
@@ -29,5 +27,5 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: Win64 EXE
-        path: package/win-x64
+        name: QuestEyes_Server.exe (Win-x64)
+        path: package/win-x64/QuestEyes_Server.exe
