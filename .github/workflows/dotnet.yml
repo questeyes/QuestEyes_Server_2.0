@@ -1,4 +1,4 @@
-name: .NET
+name: .NET build
 
 on:
   push:
@@ -23,6 +23,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet publish QuestEyes_Server.csproj -f net6.0 -o package/win-x64 -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: Win64 EXE
+        path: package/win-x64
