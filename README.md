@@ -1,4 +1,4 @@
-# QuestEyes_Server_2.0
+# QuestEyes Server v2.0+
 ## QuestEyes Server, recreated with Avalonia
 ### Note: this software is in the process of being rewritten.
 
