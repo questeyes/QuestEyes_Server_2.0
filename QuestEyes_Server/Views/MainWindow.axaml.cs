@@ -8,6 +8,7 @@ namespace QuestEyes_Server.Views
         public MainWindow()
         {
             InitializeComponent();
+            Functions.DeviceConnectivity.Search();
         }
 
         public void FirmwareUpdateCheckButton_Click(object sender, RoutedEventArgs e)

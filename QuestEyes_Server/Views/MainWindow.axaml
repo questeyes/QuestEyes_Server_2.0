@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:QuestEyes_Server.ViewModels"
+		x:DataType="vm:MainWindowViewModel"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="540"
@@ -9,16 +10,17 @@
 		MaxHeight="510" MinHeight="540"
         x:Class="QuestEyes_Server.Views.MainWindow"
         Title="QuestEyes PC App"
+		x:CompileBindings="True"
 		Background="#7E41D9">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+	<Window.DataContext>
+		<vm:MainWindowViewModel/>
+	</Window.DataContext>
 
 	<DockPanel>
 		<!-- Version info and help button panel -->
 		<Grid DockPanel.Dock="Bottom" ColumnDefinitions="318, 25" Margin="20,0,0,12">
-			<Label Foreground="White" FontFamily="Microsoft YaHei" FontSize="10" Grid.Column="0" VerticalAlignment="Center" VerticalContentAlignment="Center">QuestEyes PC App version 1.3.0</Label>
+			<TextBlock Foreground="White" FontFamily="Microsoft YaHei" FontSize="10" Grid.Column="0" VerticalAlignment="Center" Text="{Binding ServerVersion, Mode=OneWay}"/>
 			<Button x:Name="InformationButton" Click="InformationButton_Click" Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Width="40">
 				<Image Source="/Assets/information.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 			</Button>
@@ -26,7 +28,6 @@
 		<!-- End of version info and help button panel-->
 		
 		<StackPanel>
-			
 			<!-- Title and stats -->
 			<Label FontFamily="Microsoft YaHei" FontWeight="Bold" FontSize="27" Foreground="White" Width="400" Padding="20" HorizontalContentAlignment="Center" >QuestEyes</Label>
 			
@@ -58,7 +59,7 @@
 			<!-- End of button panel -->
 
 			<!-- Console panel -->
-			<TextBox x:Name="consoleBox" AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Width="360" Height="105" Margin="0,13,0,0" FontSize="10" >Welcome to the QuestEyes PC App!</TextBox>
+			<TextBox x:Name="consoleBox" AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Width="360" Height="105" Margin="0,12,0,0" FontSize="10" >Welcome to the QuestEyes PC App!</TextBox>
 			<!-- End of console panel-->
 		</StackPanel>
 	</DockPanel>

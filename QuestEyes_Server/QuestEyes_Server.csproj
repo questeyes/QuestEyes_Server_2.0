@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,9 +9,14 @@
     <AssemblyName>QuestEyes_Server</AssemblyName>
     <RootNamespace>QuestEyes_Server</RootNamespace>
     <StartupObject>QuestEyes_Server.Program</StartupObject>
+	<!--Version information-->
+	<!--Major, Minor, Build-->
+    <Version>2.0.0</Version>
+	<!--End of version information-->
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Functions\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Properties\" />
     <None Remove=".gitignore" />

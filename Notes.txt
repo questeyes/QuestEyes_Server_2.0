@@ -1,0 +1,7 @@
+ViewModels.MainWindowViewModel mainWindowViewModel = new();
+            this.DataContext = mainWindowViewModel;
+            mainWindowViewModel.ServerVersion = "QuestEyes PC App v" + "2.0.0";
+
+
+ViewModels.MainWindowViewModel main = new();
+            main.ServerVersion = "QuestEyes PC App v" + "2.0.0";
