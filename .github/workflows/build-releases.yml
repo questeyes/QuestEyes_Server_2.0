@@ -2,9 +2,7 @@ name: .NET build
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ production ]
 
 jobs:
   win64:
