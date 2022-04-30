@@ -2,7 +2,7 @@ name: SonarCloud Scan
 on:
   push:
     branches:
-	  - production
+      - production
       - dev
   pull_request:
     types: [opened, synchronize, reopened]
@@ -16,12 +16,10 @@ jobs:
         with:
           java-version: 1.11
       - name: Setup .NET
-          uses: actions/setup-dotnet@v2
-          with:
-            dotnet-version: 6.0.x
-      - uses: actions/checkout@v2
+        uses: actions/setup-dotnet@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          dotnet-version: 6.0.x
+      - uses: actions/checkout@v3
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
@@ -47,7 +45,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-		      dotnet restore QuestEyes_Server/QuestEyes_Server.csproj
+          dotnet restore QuestEyes_Server/QuestEyes_Server.csproj
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"robotprobot_QuestEyes_Server_2.0" /o:"robotprobot" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build QuestEyes_Server/QuestEyes_Server.csproj
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
