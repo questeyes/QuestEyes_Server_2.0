@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
 
 namespace QuestEyes_Server.Views
 {
@@ -13,20 +14,23 @@ namespace QuestEyes_Server.Views
         public static Subject<string> BatteryLabelText { get; set; } = new Subject<string>();
         public static Subject<string> FirmwareLabelText { get; set; } = new Subject<string>();
         public static Subject<string> ConsoleLog { get; set; } = new Subject<string>();
-
-        public static TextBox? console;
+        public static TextBox Console { get; set; } = default!;
 
         public MainWindow()
         {
             InitializeComponent();
             SetDefaultLabels();
-            
-            Functions.DeviceConnectivity.SetupAndSearch();      
+            _ = Start();
+        }
+
+        public static async Task Start()
+        {
+            await Functions.DeviceConnectivity.SetupAndSearch();
         }
 
         public void SetDefaultLabels()
         {
-            console = consoleBox;
+            Console = consoleBox;
 
             var _statusLabel = statusLabel;
             _statusLabel.Bind(Label.ContentProperty, StatusLabelText);

@@ -19,8 +19,8 @@ namespace QuestEyes_Server.Functions
        **/
 
         //Networking variables
-        public static UdpClient? DiscoverPort { get; set; }
-        public static ClientWebSocket? CommunicationSocket { get; set; }
+        public static UdpClient DiscoverPort { get; set; } = default!;
+        public static ClientWebSocket CommunicationSocket { get; set; } = default!;
 
         public static bool Connected { get; set; }
         public static bool AttemptingConnection { get; set; }
@@ -35,8 +35,8 @@ namespace QuestEyes_Server.Functions
         public static string DeviceMode { get; set; } = "NORMAL";
 
         //Timers
-        public static System.Timers.Timer? HeartbeatTimer { get; set; }
-        public static System.Timers.Timer? ConnectionTimeoutTimer { get; set; }
+        public static System.Timers.Timer HeartbeatTimer { get; set; } = default!;
+        public static System.Timers.Timer ConnectionTimeoutTimer { get; set; } = default!;
 
         //Colours for status label
         public static readonly SolidColorBrush red = new();
@@ -70,7 +70,7 @@ namespace QuestEyes_Server.Functions
                             ConnectionTimeoutTimer.Close();
                         }
 
-                        Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.console.Text + "\nSearching for device...");
+                        Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nSearching for device...");
                         Views.MainWindow.StatusLabelText.OnNext("Searching...");
                         Views.MainWindow.StatusLabelColour.OnNext(red);
                         Views.MainWindow.BatteryLabelText.OnNext("Not connected");
@@ -88,8 +88,8 @@ namespace QuestEyes_Server.Functions
                             AttemptingConnection = true;
                             string hostname = PacketContentsFormatted[1];
                             DeviceIP = PacketContentsFormatted[2];
-                            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.console.Text + "\nDetected " + hostname);
-                            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.console.Text + "\nAttempting connection to " + hostname);
+                            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nDetected " + hostname);
+                            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nAttempting connection to " + hostname);
                             Url = "ws://" + DeviceIP + ":7580";
                             CommunicationSocket = new ClientWebSocket();
                             await ConnectAsync(Url);
@@ -133,7 +133,7 @@ namespace QuestEyes_Server.Functions
             //connection failed within 10 seconds...
             ConnectionTimeoutTimer.Stop();
             ConnectionTimeoutTimer.Close();
-            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.console.Text + "\nERROR: Failed to establish connection to device.");
+            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nERROR: Failed to establish connection to device.");
             CommunicationSocket.Abort();
             CommunicationSocket.Dispose();
             AttemptingConnection = false;
@@ -193,7 +193,7 @@ namespace QuestEyes_Server.Functions
             {
                 ConnectionTimeoutTimer.Stop();
                 ConnectionTimeoutTimer.Close();
-                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.console.Text + "\nSuccessful connection confirmed");
+                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nSuccessful connection confirmed");
                 Connected = true;
                 AttemptingConnection = false;
                 HeartbeatTimer = new System.Timers.Timer(10000);
@@ -230,7 +230,7 @@ namespace QuestEyes_Server.Functions
             }
             if (messageText.Contains("EXCESSIVE_FRAME_FAILURE"))
             {
-                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.console.Text + "\nERROR: Device reported excessive frame failure, disconnecting...");
+                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nERROR: Device reported excessive frame failure, disconnecting...");
                 HeartbeatTimer.Stop();
                 HeartbeatTimer.Close();
                 CloseCommunicationSocket(CommunicationSocket);
@@ -238,14 +238,14 @@ namespace QuestEyes_Server.Functions
             }
             if (messageText.Contains("OTA_MODE_ACTIVE"))
             {
-                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.console.Text + "\nDevice has entered OTA mode.");
+                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nDevice has entered OTA mode.");
                 Views.MainWindow.StatusLabelText.OnNext("Connected in OTA mode");
                 Views.MainWindow.StatusLabelColour.OnNext(purple);
                 DeviceMode = "OTA";
             }
             else
             {
-                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.console.Text + "\nInvalid command received from device: " + messageText);
+                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nInvalid command received from device: " + messageText);
             }
         }
 
@@ -257,7 +257,7 @@ namespace QuestEyes_Server.Functions
         private static void OnHeartbeatFailure(object sender, ElapsedEventArgs e)
         {
             //heartbeat was failed to be received within 10 seconds...
-            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.console.Text + "\nERROR: Device timed out, Disconnecting...");
+            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nERROR: Device timed out, Disconnecting...");
             HeartbeatTimer.Stop();
             HeartbeatTimer.Close();
             CloseCommunicationSocket(CommunicationSocket);
@@ -276,6 +276,6 @@ namespace QuestEyes_Server.Functions
                     DiagnosticsPanel.DecodeError.Visible = true;
                 });
             }*/
-            }
         }
+    }
 }
