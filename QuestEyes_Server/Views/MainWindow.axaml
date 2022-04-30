@@ -32,34 +32,34 @@
 			<Label FontFamily="Microsoft YaHei" FontWeight="Bold" FontSize="27" Foreground="White" Width="400" Padding="20" HorizontalContentAlignment="Center" >QuestEyes</Label>
 			
 			<Panel Margin="3" Width="360" Height="42" Background="#E0E0E0">
-				<Label Padding="10" VerticalContentAlignment="Center">Status: </Label>
-				<TextBlock Padding="10" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding Status}" Foreground="{Binding StatusColour}"/>
+				<Label Padding="10" VerticalContentAlignment="Center" FontWeight="Bold">Status: </Label>
+				<Label Padding="10" x:Name="statusLabel" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 			</Panel>
 			<Panel Margin="3" Width="360" Height="42" Background="#E0E0E0">
-				<Label Padding="10" VerticalContentAlignment="Center">Battery level: </Label>
-				<TextBlock Padding="10" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding BatteryStatus}"/>
+				<Label Padding="10" VerticalContentAlignment="Center" FontWeight="Bold">Battery level: </Label>
+				<Label Padding="10" x:Name="batteryLabel" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 			</Panel>
 			<Panel Margin="3" Width="360" Height="42" Background="#E0E0E0">
-				<Label Padding="10" VerticalContentAlignment="Center">Firmware version: </Label>
-				<TextBlock Padding="10" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding FirmwareVersion}"/>
+				<Label Padding="10" VerticalContentAlignment="Center" FontWeight="Bold">Firmware version: </Label>
+				<Label Padding="10" x:Name="firmwareLabel" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 			</Panel>
 			<!-- End of title and stats -->
 
 			<!-- Button panel -->
 			<Panel Margin="20,10,20,0">
 				<Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="180, 180" Width="360">
-					<Button x:Name="FirmwareUpdateCheckButton" Click="FirmwareUpdateCheckButton_Click" Margin="0,0,1,2" Foreground="White" Padding="7" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Update firmware</Button>
-					<Button x:Name="ForceReconnectButton" Click="ForceReconnectButton_Click" Margin="1,0,0,2" Foreground="White" Padding="7" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Reconnect</Button>
-					<Button x:Name="FactoryResetButton" Click="FactoryResetButton_Click" Margin="0,0,1,2" Foreground="White" Padding="7" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Factory reset</Button>
-					<Button x:Name="DiagnosticsButton" Click="DiagnosticsButton_Click" Margin="1,0,0,2" Foreground="White" Padding="7" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Diagnostics</Button>
-					<Button x:Name="OscControlButton" Click="OscControlButton_Click" Margin="0,0,0,2" Foreground="White" Padding="7" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Connect to apps and games (OSC control)</Button>
-					<Button x:Name="CalibrateButton" Click="CalibrateButton_Click" Foreground="White" Padding="7" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Begin device calibration</Button>
+					<Button x:Name="FirmwareUpdateCheckButton" IsEnabled="False" Click="FirmwareUpdateCheckButton_Click" Margin="0,0,1,2" Foreground="White" Padding="7" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Update device</Button>
+					<Button x:Name="ForceReconnectButton" IsEnabled="False" Click="ForceReconnectButton_Click" Margin="1,0,0,2" Foreground="White" Padding="7" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Reconnect device</Button>
+					<Button x:Name="FactoryResetButton" IsEnabled="False" Click="FactoryResetButton_Click" Margin="0,0,1,2" Foreground="White" Padding="7" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Factory reset device</Button>
+					<Button x:Name="DiagnosticsButton" IsEnabled="False" Click="DiagnosticsButton_Click" Margin="1,0,0,2" Foreground="White" Padding="7" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Device diagnostics</Button>
+					<Button x:Name="CalibrateButton" IsEnabled="False" Click="CalibrateButton_Click" Margin="0,0,0,2" Foreground="White" Padding="7" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Begin device calibration</Button>
+					<Button x:Name="OscControlButton" Click="OscControlButton_Click" Foreground="White" Padding="7" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Connect to apps and games (OSC control)</Button>
 				</Grid>
 			</Panel>
 			<!-- End of button panel -->
 
 			<!-- Console panel -->
-			<TextBox x:Name="consoleBox" AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Width="360" Height="105" Margin="0,12,0,0" FontSize="10" >Welcome to the QuestEyes PC App!</TextBox>
+			<TextBox x:Name="consoleBox" AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Focusable="False" Width="360" Height="105" Margin="0,12,0,0" FontSize="10"/>
 			<!-- End of console panel-->
 		</StackPanel>
 	</DockPanel>
