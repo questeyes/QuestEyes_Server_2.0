@@ -60,6 +60,7 @@ namespace QuestEyes_Server.Models
                         Functions.UIFunctions.SetStatus("searching", null);
                         Functions.UIFunctions.SetBatteryText("Not connected");
                         Functions.UIFunctions.SetFirmwareText("Not connected");
+                        Functions.UIFunctions.DisableButtons();
                         Url = null;
                         PacketContents = null;
                         PacketContentsFormatted = Array.Empty<string>();
@@ -183,11 +184,7 @@ namespace QuestEyes_Server.Models
                 HeartbeatTimer.Elapsed += OnHeartbeatFailure;
                 HeartbeatTimer.AutoReset = true;
                 HeartbeatTimer.Enabled = true;
-                /*Main.ReconnectButton.Invoke((MethodInvoker)delegate
-                {
-                    Main.ReconnectButton.Enabled = true;
-                    Main.UpdateButton.Enabled = true;
-                });*/
+                Functions.UIFunctions.EnableButtons();
                 string[] split = messageText.Split(' ');
                 DeviceName = split[1];
                 Functions.UIFunctions.SetStatus("connected", DeviceName);

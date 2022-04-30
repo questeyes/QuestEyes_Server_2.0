@@ -16,8 +16,7 @@ namespace QuestEyes_Server.Views
         public static TextBox Console { get; set; } = default!;
         public static Subject<string> ConsoleLog { get; set; } = new Subject<string>();
         public static Subject<int> ConsoleCaret { get; set; } = new Subject<int>();
-
-
+        public static Subject<bool> ButtonState { get; set; } = new Subject<bool>();
 
         //Colours for status label
         public static readonly SolidColorBrush red = new();
@@ -64,6 +63,18 @@ namespace QuestEyes_Server.Views
             Functions.UIFunctions.SetBatteryText("Not connected");
             Functions.UIFunctions.SetFirmwareText("Not connected");
             Functions.UIFunctions.PrintToConsole("Welcome to the QuestEyes PC App!");
+
+            var _FirmwareUpdateCheckButton = FirmwareUpdateCheckButton;
+            var _ForceReconnectButton = ForceReconnectButton;
+            var _FactoryResetButton = FactoryResetButton;
+            var _DiagnosticsButton = DiagnosticsButton;
+            var _CalibrateButton = CalibrateButton;
+            _FirmwareUpdateCheckButton.Bind(Button.IsEnabledProperty, ButtonState);
+            _ForceReconnectButton.Bind(Button.IsEnabledProperty, ButtonState);
+            _FactoryResetButton.Bind(Button.IsEnabledProperty, ButtonState);
+            _DiagnosticsButton.Bind(Button.IsEnabledProperty, ButtonState);
+            _CalibrateButton.Bind(Button.IsEnabledProperty, ButtonState);
+
         }
 
         public void FirmwareUpdateCheckButton_Click(object sender, RoutedEventArgs e)

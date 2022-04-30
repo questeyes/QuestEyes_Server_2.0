@@ -1,7 +1,4 @@
-﻿using Avalonia.Media;
-using System.Threading.Tasks;
-
-namespace QuestEyes_Server.Functions
+﻿namespace QuestEyes_Server.Functions
 {
     public static class UIFunctions
     {
@@ -9,7 +6,13 @@ namespace QuestEyes_Server.Functions
 
         public static void PrintToConsole(string message)
         {
-            ConsoleContent = ConsoleContent + message + "\n";
+            if (ConsoleContent == null)
+            {
+                ConsoleContent += message;
+            }
+            else {
+                ConsoleContent += "\n" + message ;
+            }
 
             Views.MainWindow.ConsoleLog.OnNext(ConsoleContent);
             Views.MainWindow.ConsoleCaret.OnNext(Views.MainWindow.Console.Text.Length + 256);
@@ -44,6 +47,15 @@ namespace QuestEyes_Server.Functions
         public static void SetFirmwareText(string message)
         {
             Views.MainWindow.FirmwareLabelText.OnNext(message);
+        }
+
+        public static void EnableButtons()
+        {
+            Views.MainWindow.ButtonState.OnNext(true);
+        }
+        public static void DisableButtons()
+        {
+            Views.MainWindow.ButtonState.OnNext(false);
         }
     }
 }

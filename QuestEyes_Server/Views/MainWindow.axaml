@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="540"
 		Width="400" Height="540"
 		MaxWidth="400" MinWidth="400"
-		MaxHeight="510" MinHeight="540"
+		MaxHeight="540" MinHeight="540"
         x:Class="QuestEyes_Server.Views.MainWindow"
         Title="QuestEyes PC App"
 		x:CompileBindings="True"

@@ -13,7 +13,7 @@ namespace QuestEyes_Server.ViewModels
     }
 
     public class MainWindowViewModel : ViewModelBase
-    {
+    { 
         private string _serverVersion = "QuestEyes PC App v0.0.0";
 
         public string ServerVersion
