@@ -244,6 +244,7 @@ namespace QuestEyes_Server.Functions
         private static void BinaryReceive(MemoryStream ms)
         {
             //(int right_X, int right_Y, int left_X, int left_Y) = EyeTrackingFramework.detectEyes(ms.ToArray());
+            //
         }
 
         private static void OnHeartbeatFailure(object sender, ElapsedEventArgs e)
