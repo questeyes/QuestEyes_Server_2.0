@@ -1,14 +1,55 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Interactivity;
+using System.Reactive.Subjects;
 
 namespace QuestEyes_Server.Views
 {
     public partial class MainWindow : Window
     {
+        public static Subject<string> StatusLabelText { get; set; } = new Subject<string>();
+        public static Subject<IBrush> StatusLabelColour { get; set; } = new Subject<IBrush>();
+        public static Subject<string> BatteryLabelText { get; set; } = new Subject<string>();
+        public static Subject<string> FirmwareLabelText { get; set; } = new Subject<string>();
+        public static Subject<string> ConsoleLog { get; set; } = new Subject<string>();
+
+        public static TextBox? console;
+
         public MainWindow()
         {
             InitializeComponent();
-            Functions.DeviceConnectivity.Search();
+            SetDefaultLabels();
+            
+            Functions.DeviceConnectivity.SetupAndSearch();      
+        }
+
+        public void SetDefaultLabels()
+        {
+            console = consoleBox;
+
+            var _statusLabel = statusLabel;
+            _statusLabel.Bind(Label.ContentProperty, StatusLabelText);
+            _statusLabel.Bind(Label.ForegroundProperty, StatusLabelColour);
+
+            var _batteryLabel = batteryLabel;
+            _batteryLabel.Bind(Label.ContentProperty, BatteryLabelText);
+
+            var _firmwareLabel = firmwareLabel;
+            _firmwareLabel.Bind(Label.ContentProperty, FirmwareLabelText);
+
+            var _console = consoleBox;
+            _console.Bind(TextBox.TextProperty, ConsoleLog);
+
+            SolidColorBrush red = new();
+            red.Color = Color.FromRgb(255, 0, 0);
+            StatusLabelText.OnNext("Searching...");
+            StatusLabelColour.OnNext(red);
+
+            BatteryLabelText.OnNext("Not connected");
+            FirmwareLabelText.OnNext("Not connected");
+
+            ConsoleLog.OnNext("Welcome to the QuestEyes PC App!");
         }
 
         public void FirmwareUpdateCheckButton_Click(object sender, RoutedEventArgs e)
