@@ -6,9 +6,8 @@ using System.Net.Sockets;
 using System.Timers;
 using System.Threading;
 using System.IO;
-using Avalonia.Media;
 
-namespace QuestEyes_Server.Functions
+namespace QuestEyes_Server.Models
 {
     internal class DeviceConnectivity : App
     {
@@ -38,21 +37,8 @@ namespace QuestEyes_Server.Functions
         public static System.Timers.Timer HeartbeatTimer { get; set; } = default!;
         public static System.Timers.Timer ConnectionTimeoutTimer { get; set; } = default!;
 
-        //Colours for status label
-        public static readonly SolidColorBrush red = new();
-        public static readonly SolidColorBrush orange = new();
-        public static readonly SolidColorBrush green = new();
-        public static readonly SolidColorBrush purple = new();
-
         public static async Task SetupAndSearch()
         {
-            //setup the label colours
-            red.Color = Color.FromRgb(255, 0, 0);
-            orange.Color = Color.FromRgb(255, 165, 0);
-            green.Color = Color.FromRgb(0, 255, 0);
-            purple.Color = Color.FromRgb(138, 43, 226);
-
-            //start search
             await Task.Run(async () =>
             {
                 while (true)
@@ -70,11 +56,10 @@ namespace QuestEyes_Server.Functions
                             ConnectionTimeoutTimer.Close();
                         }
 
-                        Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nSearching for device...");
-                        Views.MainWindow.StatusLabelText.OnNext("Searching...");
-                        Views.MainWindow.StatusLabelColour.OnNext(red);
-                        Views.MainWindow.BatteryLabelText.OnNext("Not connected");
-                        Views.MainWindow.FirmwareLabelText.OnNext("Not connected");
+                        Functions.UIFunctions.PrintToConsole("Searching for device...");
+                        Functions.UIFunctions.SetStatus("searching", null);
+                        Functions.UIFunctions.SetBatteryText("Not connected");
+                        Functions.UIFunctions.SetFirmwareText("Not connected");
                         Url = null;
                         PacketContents = null;
                         PacketContentsFormatted = Array.Empty<string>();
@@ -88,8 +73,8 @@ namespace QuestEyes_Server.Functions
                             AttemptingConnection = true;
                             string hostname = PacketContentsFormatted[1];
                             DeviceIP = PacketContentsFormatted[2];
-                            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nDetected " + hostname);
-                            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nAttempting connection to " + hostname);
+                            Functions.UIFunctions.PrintToConsole("Detected " + hostname + ".");
+                            Functions.UIFunctions.PrintToConsole("Attempting connection to " + hostname + ".");
                             Url = "ws://" + DeviceIP + ":7580";
                             CommunicationSocket = new ClientWebSocket();
                             await ConnectAsync(Url);
@@ -101,9 +86,8 @@ namespace QuestEyes_Server.Functions
 
         public static async Task ConnectAsync(string url)
         {
-            
-            Views.MainWindow.StatusLabelText.OnNext("Connecting...");
-            Views.MainWindow.StatusLabelColour.OnNext(orange);
+
+            Functions.UIFunctions.SetStatus("connecting", null);
             ConnectionTimeoutTimer = new System.Timers.Timer(10000);
             ConnectionTimeoutTimer.Elapsed += OnConnectionTimeout;
             ConnectionTimeoutTimer.AutoReset = true;
@@ -133,7 +117,7 @@ namespace QuestEyes_Server.Functions
             //connection failed within 10 seconds...
             ConnectionTimeoutTimer.Stop();
             ConnectionTimeoutTimer.Close();
-            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nERROR: Failed to establish connection to device.");
+            Functions.UIFunctions.PrintToConsole("ERROR: Failed to establish connection to device.");
             CommunicationSocket.Abort();
             CommunicationSocket.Dispose();
             AttemptingConnection = false;
@@ -193,7 +177,6 @@ namespace QuestEyes_Server.Functions
             {
                 ConnectionTimeoutTimer.Stop();
                 ConnectionTimeoutTimer.Close();
-                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nSuccessful connection confirmed");
                 Connected = true;
                 AttemptingConnection = false;
                 HeartbeatTimer = new System.Timers.Timer(10000);
@@ -207,15 +190,16 @@ namespace QuestEyes_Server.Functions
                 });*/
                 string[] split = messageText.Split(' ');
                 DeviceName = split[1];
-                Views.MainWindow.StatusLabelText.OnNext("Connected to " + DeviceName);
-                Views.MainWindow.StatusLabelColour.OnNext(green);
+                Functions.UIFunctions.SetStatus("connected", DeviceName);
+                Functions.UIFunctions.PrintToConsole("Successful connection confirmed.");
                 return;
             }
             if (messageText.Contains("FIRMWARE_VER"))
             {
                 string[] split = messageText.Split(' ');
                 DeviceFirmware = split[1];
-                Views.MainWindow.FirmwareLabelText.OnNext(DeviceFirmware);
+                Functions.UIFunctions.SetFirmwareText(DeviceFirmware);
+                Functions.UIFunctions.PrintToConsole("Device reported firmware version " + DeviceFirmware + ".");
                 return;
             }
             if (messageText.Contains("BATTERY"))
@@ -230,7 +214,7 @@ namespace QuestEyes_Server.Functions
             }
             if (messageText.Contains("EXCESSIVE_FRAME_FAILURE"))
             {
-                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nERROR: Device reported excessive frame failure, disconnecting...");
+                Functions.UIFunctions.PrintToConsole("ERROR: Device reported excessive frame failure, disconnecting...");
                 HeartbeatTimer.Stop();
                 HeartbeatTimer.Close();
                 CloseCommunicationSocket(CommunicationSocket);
@@ -238,14 +222,13 @@ namespace QuestEyes_Server.Functions
             }
             if (messageText.Contains("OTA_MODE_ACTIVE"))
             {
-                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nDevice has entered OTA mode.");
-                Views.MainWindow.StatusLabelText.OnNext("Connected in OTA mode");
-                Views.MainWindow.StatusLabelColour.OnNext(purple);
+                Functions.UIFunctions.PrintToConsole("Device has entered OTA mode.");
+                Functions.UIFunctions.SetStatus("ota", null);
                 DeviceMode = "OTA";
             }
             else
             {
-                Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nInvalid command received from device: " + messageText);
+                Functions.UIFunctions.PrintToConsole("Invalid command received from device: " + messageText + ".");
             }
         }
 
@@ -257,7 +240,7 @@ namespace QuestEyes_Server.Functions
         private static void OnHeartbeatFailure(object sender, ElapsedEventArgs e)
         {
             //heartbeat was failed to be received within 10 seconds...
-            Views.MainWindow.ConsoleLog.OnNext(Views.MainWindow.Console.Text + "\nERROR: Device timed out, Disconnecting...");
+            Functions.UIFunctions.PrintToConsole("ERROR: Device timed out, Disconnecting...");
             HeartbeatTimer.Stop();
             HeartbeatTimer.Close();
             CloseCommunicationSocket(CommunicationSocket);

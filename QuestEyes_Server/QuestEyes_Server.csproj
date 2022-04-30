@@ -16,7 +16,6 @@
     <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Functions\" />
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Properties\" />
     <None Remove=".gitignore" />

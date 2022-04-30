@@ -13,24 +13,38 @@ namespace QuestEyes_Server.Views
         public static Subject<IBrush> StatusLabelColour { get; set; } = new Subject<IBrush>();
         public static Subject<string> BatteryLabelText { get; set; } = new Subject<string>();
         public static Subject<string> FirmwareLabelText { get; set; } = new Subject<string>();
-        public static Subject<string> ConsoleLog { get; set; } = new Subject<string>();
         public static TextBox Console { get; set; } = default!;
+        public static Subject<string> ConsoleLog { get; set; } = new Subject<string>();
+        public static Subject<int> ConsoleCaret { get; set; } = new Subject<int>();
+
+
+
+        //Colours for status label
+        public static readonly SolidColorBrush red = new();
+        public static readonly SolidColorBrush orange = new();
+        public static readonly SolidColorBrush green = new();
+        public static readonly SolidColorBrush purple = new();
 
         public MainWindow()
         {
             InitializeComponent();
-            SetDefaultLabels();
+            SetControls();
             _ = Start();
         }
 
         public static async Task Start()
         {
-            await Functions.DeviceConnectivity.SetupAndSearch();
+            await Models.DeviceConnectivity.SetupAndSearch();
         }
 
-        public void SetDefaultLabels()
+        public void SetControls()
         {
             Console = consoleBox;
+
+            red.Color = Color.FromRgb(255, 0, 0);
+            orange.Color = Color.FromRgb(255, 165, 0);
+            green.Color = Color.FromRgb(25, 145, 71);
+            purple.Color = Color.FromRgb(138, 43, 226);
 
             var _statusLabel = statusLabel;
             _statusLabel.Bind(Label.ContentProperty, StatusLabelText);
@@ -44,16 +58,12 @@ namespace QuestEyes_Server.Views
 
             var _console = consoleBox;
             _console.Bind(TextBox.TextProperty, ConsoleLog);
+            _console.Bind(TextBox.CaretIndexProperty, ConsoleCaret);
 
-            SolidColorBrush red = new();
-            red.Color = Color.FromRgb(255, 0, 0);
-            StatusLabelText.OnNext("Searching...");
-            StatusLabelColour.OnNext(red);
-
-            BatteryLabelText.OnNext("Not connected");
-            FirmwareLabelText.OnNext("Not connected");
-
-            ConsoleLog.OnNext("Welcome to the QuestEyes PC App!");
+            Functions.UIFunctions.SetStatus("searching", null);
+            Functions.UIFunctions.SetBatteryText("Not connected");
+            Functions.UIFunctions.SetFirmwareText("Not connected");
+            Functions.UIFunctions.PrintToConsole("Welcome to the QuestEyes PC App!");
         }
 
         public void FirmwareUpdateCheckButton_Click(object sender, RoutedEventArgs e)
