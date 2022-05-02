@@ -4,22 +4,22 @@
 		x:DataType="vm:MainWindowViewModel"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="540"
-		Width="400" Height="540"
-		MaxWidth="400" MinWidth="400"
-		MaxHeight="540" MinHeight="540"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="550"
+		ExtendClientAreaToDecorationsHint="True"
+		ExtendClientAreaTitleBarHeightHint="-1"
         x:Class="QuestEyes_Server.Views.MainWindow"
         Title="QuestEyes PC App"
 		x:CompileBindings="True"
-		Background="#7E41D9">
+		Background="#7E41D9"
+		SizeToContent="WidthAndHeight">
 
 	<Window.DataContext>
 		<vm:MainWindowViewModel/>
 	</Window.DataContext>
 
-	<DockPanel>
+	<DockPanel Margin="0,10,0,0" HorizontalAlignment="Center">
 		<!-- Version info and help button panel -->
-		<Grid DockPanel.Dock="Bottom" ColumnDefinitions="318, 25" Margin="20,0,0,12">
+		<Grid DockPanel.Dock="Bottom" ColumnDefinitions="320, 40" Margin="0,10,0,14" HorizontalAlignment="Center">
 			<TextBlock Foreground="White" FontFamily="Microsoft YaHei" FontSize="10" Grid.Column="0" VerticalAlignment="Center" Text="{Binding ServerVersion, Mode=OneWay}"/>
 			<Button x:Name="InformationButton" Click="InformationButton_Click" Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Width="40">
 				<Image Source="/Assets/information.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
@@ -27,7 +27,7 @@
 		</Grid>
 		<!-- End of version info and help button panel-->
 		
-		<StackPanel>
+		<StackPanel HorizontalAlignment="Center">
 			<!-- Title and stats -->
 			<Label FontFamily="Microsoft YaHei" FontWeight="Bold" FontSize="27" Foreground="White" Width="400" Padding="20" HorizontalContentAlignment="Center" >QuestEyes</Label>
 			
@@ -48,7 +48,7 @@
 			<!-- Button panel -->
 			<Panel Margin="20,10,20,0">
 				<Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="180, 180" Width="360">
-					<Button x:Name="FirmwareUpdateCheckButton" IsEnabled="False" Click="FirmwareUpdateCheckButton_Click" Margin="0,0,1,2" Foreground="White" Padding="7" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Update device</Button>
+					<Button x:Name="FirmwareUpdateCheckButton" IsEnabled="False" Command="{Binding ShowUpdater}" Margin="0,0,1,2" Foreground="White" Padding="7" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Update device</Button>
 					<Button x:Name="ForceReconnectButton" IsEnabled="False" Click="ForceReconnectButton_Click" Margin="1,0,0,2" Foreground="White" Padding="7" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Reconnect device</Button>
 					<Button x:Name="FactoryResetButton" IsEnabled="False" Click="FactoryResetButton_Click" Margin="0,0,1,2" Foreground="White" Padding="7" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Factory reset device</Button>
 					<Button x:Name="DiagnosticsButton" IsEnabled="False" Click="DiagnosticsButton_Click" Margin="1,0,0,2" Foreground="White" Padding="7" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Device diagnostics</Button>

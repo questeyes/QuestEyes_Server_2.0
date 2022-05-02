@@ -4,10 +4,13 @@ using Avalonia.Media;
 using Avalonia.Interactivity;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using ReactiveUI;
+using QuestEyes_Server.ViewModels;
+using Avalonia.ReactiveUI;
 
 namespace QuestEyes_Server.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         public static Subject<string> StatusLabelText { get; set; } = new Subject<string>();
         public static Subject<IBrush> StatusLabelColour { get; set; } = new Subject<IBrush>();
@@ -27,6 +30,7 @@ namespace QuestEyes_Server.Views
         public MainWindow()
         {
             InitializeComponent();
+            this.WhenActivated(d => d(ViewModel!.UpdaterView.RegisterHandler(DoShowUpdaterAsync)));
             SetControls();
             _ = Start();
         }
@@ -74,16 +78,25 @@ namespace QuestEyes_Server.Views
             _FactoryResetButton.Bind(Button.IsEnabledProperty, ButtonState);
             _DiagnosticsButton.Bind(Button.IsEnabledProperty, ButtonState);
             _CalibrateButton.Bind(Button.IsEnabledProperty, ButtonState);
-
         }
 
-        public void FirmwareUpdateCheckButton_Click(object sender, RoutedEventArgs e)
+        private async Task DoShowUpdaterAsync(InteractionContext<UpdaterWindowViewModel, ViewModelBase?> interaction)
         {
-            throw new System.NotSupportedException();
+            var dialog = new UpdaterWindow
+            {
+                DataContext = interaction.Input
+            };
+
+            var result = await dialog.ShowDialog<UpdaterWindowViewModel?>(this);
+            interaction.SetOutput(result);
         }
+
         public void ForceReconnectButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new System.NotSupportedException();
+            Functions.UIFunctions.PrintToConsole("Forcing reconnect per user request...");
+            Models.DeviceConnectivity.HeartbeatTimer.Stop();
+            Models.DeviceConnectivity.HeartbeatTimer.Close();
+            Models.DeviceConnectivity.CloseCommunicationSocket(Models.DeviceConnectivity.CommunicationSocket);
         }
         public void FactoryResetButton_Click(object sender, RoutedEventArgs e)
         {
