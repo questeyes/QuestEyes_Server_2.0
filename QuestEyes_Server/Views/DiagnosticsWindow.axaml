@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:QuestEyes_Server.ViewModels"
+		x:DataType="vm:DiagnosticsWindowViewModel"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="420"
+        x:Class="QuestEyes_Server.Views.DiagnosticsWindow"
+        Title="QuestEyes - Diagnostics"
+		x:CompileBindings="True"
+		Background="#7E41D9"
+		CanResize="False"
+	    MaxWidth="540" MinWidth="540"
+		MaxHeight="380" MinHeight="380"
+		WindowStartupLocation="CenterOwner">
+
+	<Window.DataContext>
+		<vm:DiagnosticsWindowViewModel/>
+	</Window.DataContext>
+
+	<DockPanel>
+		<StackPanel>
+			<Panel Margin="0,20,0,0" MinWidth="250" MinHeight="250" MaxWidth="500" MaxHeight="250" Background="#E0E0E0">
+				<Label VerticalContentAlignment="Center" HorizontalContentAlignment="Center">Camera preview is unavailable:&#10;Device is disconnected or in OTA mode.</Label>
+				<Image MinWidth="250" MinHeight="250" MaxWidth="500" MaxHeight="250" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</Panel>
+			<Panel Margin="10" Width="500" Height="80" Background="#E0E0E0">
+				<Label Margin="0,3,0,0" HorizontalContentAlignment="Center" Foreground="Red">There may be delays in tracking while the diagnostics window is open</Label>
+				<Grid Margin="0,17,0,0" ColumnDefinitions="Auto, Auto, 25, Auto, Auto" RowDefinitions="Auto, Auto" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Label HorizontalContentAlignment="Center" Grid.Column="0" Grid.Row="0" FontWeight="Bold">Left eye X position:</Label>
+					<Label HorizontalContentAlignment="Center" Grid.Column="1" Grid.Row="0">0.00</Label>
+					<Label HorizontalContentAlignment="Center" Grid.Column="0" Grid.Row="2" FontWeight="Bold">Left eye Y position:</Label>
+					<Label HorizontalContentAlignment="Center" Grid.Column="1" Grid.Row="3">0.00</Label>
+					<Label HorizontalContentAlignment="Center" Grid.Column="3" Grid.Row="0" FontWeight="Bold">Right eye X position:</Label>
+					<Label HorizontalContentAlignment="Center" Grid.Column="4" Grid.Row="0">0.00</Label>
+					<Label HorizontalContentAlignment="Center" Grid.Column="3" Grid.Row="1" FontWeight="Bold">Right eye Y position:</Label>
+					<Label HorizontalContentAlignment="Center" Grid.Column="4" Grid.Row="1">0.00</Label>
+				</Grid>
+			</Panel>
+		</StackPanel>
+	</DockPanel>
+</Window>

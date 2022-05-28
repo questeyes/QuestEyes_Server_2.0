@@ -8,7 +8,7 @@
 		ExtendClientAreaToDecorationsHint="True"
 		ExtendClientAreaTitleBarHeightHint="-1"
         x:Class="QuestEyes_Server.Views.UpdaterWindow"
-        Title="Updater"
+        Title="QuestEyes - Firmware Updater"
 		x:CompileBindings="True"
 		Background="#681cd9"
 		WindowStartupLocation="CenterOwner"
@@ -22,8 +22,9 @@
 		<Panel Margin="40">
 			<StackPanel HorizontalAlignment="Center">
 				<!-- Title and stats -->
-				<Label FontFamily="Microsoft YaHei" FontWeight="Bold" FontSize="20" Foreground="White" HorizontalContentAlignment="Center">QuestEyes Firmware Updater</Label>
-				<Label Foreground="White" HorizontalContentAlignment="Center">Connecting to update server...</Label>
+				<Label FontFamily="Microsoft YaHei" FontWeight="Bold" FontSize="20" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Firmware Updater</Label>
+				<Label x:Name="UpdateStageText" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Connecting to update server...</Label>
+				<Label x:Name="ProgressText" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsVisible="False">0%</Label>
 			</StackPanel>
 		</Panel>
 	</Panel>

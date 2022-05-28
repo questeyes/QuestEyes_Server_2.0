@@ -31,6 +31,7 @@ namespace QuestEyes_Server.Views
         {
             InitializeComponent();
             this.WhenActivated(d => d(ViewModel!.UpdaterView.RegisterHandler(DoShowUpdaterAsync)));
+            this.WhenActivated(d => d(ViewModel!.DiagnosticsView.RegisterHandler(DoShowDiagnosticsAsync)));
             SetControls();
             _ = Start();
         }
@@ -102,9 +103,15 @@ namespace QuestEyes_Server.Views
         {
             throw new System.NotSupportedException();
         }
-        public void DiagnosticsButton_Click(object sender, RoutedEventArgs e)
+        private async Task DoShowDiagnosticsAsync(InteractionContext<DiagnosticsWindowViewModel, ViewModelBase?> interaction)
         {
-            throw new System.NotSupportedException();
+            var dialog = new DiagnosticsWindow
+            {
+                DataContext = interaction.Input
+            };
+
+            var result = await dialog.ShowDialog<DiagnosticsWindowViewModel?>(this);
+            interaction.SetOutput(result);
         }
         public void OscControlButton_Click(object sender, RoutedEventArgs e)
         {

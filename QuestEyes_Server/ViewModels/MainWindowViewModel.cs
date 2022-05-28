@@ -16,7 +16,9 @@ namespace QuestEyes_Server.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         public Interaction<UpdaterWindowViewModel, ViewModelBase> UpdaterView { get; }
+        public Interaction<DiagnosticsWindowViewModel, ViewModelBase> DiagnosticsView { get; }
         public ICommand ShowUpdater { get; }
+        public ICommand ShowDiagnostics { get; }
 
         private string _serverVersion = "QuestEyes PC App (version unknown)";
 
@@ -39,6 +41,15 @@ namespace QuestEyes_Server.ViewModels
                 var updater = new UpdaterWindowViewModel();
 #pragma warning disable S1481 // Unused local variables should be removed
                 var updaterDialog = await UpdaterView.Handle(updater);
+#pragma warning restore S1481 // Unused local variables should be removed
+            });
+
+            DiagnosticsView = new Interaction<DiagnosticsWindowViewModel, ViewModelBase>();
+            ShowDiagnostics = ReactiveCommand.CreateFromTask(async () =>
+            {
+                var diagnostics = new DiagnosticsWindowViewModel();
+#pragma warning disable S1481 // Unused local variables should be removed
+                var diagnosticsDialog = await DiagnosticsView.Handle(diagnostics);
 #pragma warning restore S1481 // Unused local variables should be removed
             });
         }
