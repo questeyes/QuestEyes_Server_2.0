@@ -231,7 +231,7 @@ namespace QuestEyes_Server.Models
 
         private static void BinaryReceive(MemoryStream ms)
         {
-            //(int right_X, int right_Y, int left_X, int left_Y) = EyeTrackingFramework.detectEyes(ms.ToArray());
+            Functions.EyeTrackFramework.ProcessData(ms.ToArray()); //send the data across to the eye tracking framework in array format
         }
 
         private static void OnHeartbeatFailure(object sender, ElapsedEventArgs e)
@@ -248,14 +248,6 @@ namespace QuestEyes_Server.Models
             socket.Dispose();
             Connected = false;
             AttemptingConnection = false;
-
-            /*if (DiagnosticsPanel.DiagnosticsOpen)
-            {
-                DiagnosticsPanel.DecodeError.Invoke((MethodInvoker)delegate
-                {
-                    DiagnosticsPanel.DecodeError.Visible = true;
-                });
-            }*/
         }
     }
 }
