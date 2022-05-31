@@ -34,7 +34,7 @@
 			<Panel>
 				<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="360" Width="360">
 					<Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Grid.Row="0" Margin="0,20,0,0" Foreground="Red" BorderBrush="Red" Background="Orange">HOLD TO RESET</Button>
-					<Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Grid.Row="1" Margin="0,5,0,0" Foreground="White">Go back</Button>
+					<Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Grid.Row="1" Margin="0,5,0,0" Foreground="White" Command="{Binding $parent[Window].DataContext.ReturnToStats}">Go back</Button>
 				</Grid>
 			</Panel>
 		</StackPanel>
