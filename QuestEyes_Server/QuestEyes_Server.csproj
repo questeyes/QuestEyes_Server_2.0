@@ -6,7 +6,7 @@
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
     <TrimMode>copyused</TrimMode>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <AssemblyName>QuestEyes_Server</AssemblyName>
+    <AssemblyName>QuestEyes PC App</AssemblyName>
     <RootNamespace>QuestEyes_Server</RootNamespace>
     <StartupObject>QuestEyes_Server.Program</StartupObject>
 	<!--Version information-->
@@ -14,12 +14,21 @@
     <Version>2.0.0</Version>
 	<!--End of version information-->
     <SignAssembly>False</SignAssembly>
+    <Company>Steven Wheeler</Company>
+    <Description>QuestEyes PC App is the software package to accompany the QuestEyes hardware system for Eye Tracking.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
-    <Folder Include="Properties\" />
+    <AvaloniaXaml Remove="Models\**" />
+    <Compile Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
     <None Remove=".gitignore" />
     <None Remove="Assets\information.png" />
+    <None Remove="Assets\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\information.png" />
+    <AvaloniaResource Include="Assets\warning.png" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.
@@ -29,11 +38,17 @@
     <TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.13" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
+    <PackageReference Include="Avalonia" Version="0.10.14" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.14" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.13" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.14" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.14" />
+    <PackageReference Include="OpenCvSharp4" Version="4.5.5.20211231" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\ResetView.axaml.cs">
+      <DependentUpon>ResetView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

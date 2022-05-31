@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:QuestEyes_Server.ViewModels"
+			 mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="525"
+			 Background="#7E41D9"
+             x:Class="QuestEyes_Server.Views.StatusView">
+
+	<UserControl.DataContext>
+		<vm:StatusViewModel/>
+	</UserControl.DataContext>
+
+	<DockPanel HorizontalAlignment="Center">
+		<!-- Version info and help button panel -->
+		<Grid DockPanel.Dock="Bottom" ColumnDefinitions="323, 32" Margin="0,0,0,12" HorizontalAlignment="Center">
+			<TextBlock Foreground="White" FontFamily="Microsoft YaHei" FontSize="10" Grid.Column="0" VerticalAlignment="Center" Text="{Binding ServerVersion, Mode=OneWay}"/>
+			<Button x:Name="InformationButton" Click="InformationButton_Click" Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Width="35">
+				<Image Source="/Assets/information.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+			</Button>
+		</Grid>
+		<!-- End of version info and help button panel-->
+
+		<StackPanel HorizontalAlignment="Center">
+			<!-- Title and stats -->
+			<Label FontFamily="Microsoft YaHei" FontWeight="Bold" FontSize="27" Foreground="White" Width="400" Padding="20" HorizontalContentAlignment="Center">QuestEyes</Label>
+
+			<Panel Margin="3" Width="360" Height="42" Background="#E0E0E0">
+				<Label Padding="10" VerticalContentAlignment="Center" FontWeight="Bold">Status: </Label>
+				<Label Padding="10" x:Name="statusLabel" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+			</Panel>
+			<Panel Margin="3" Width="360" Height="42" Background="#E0E0E0">
+				<Label Padding="10" VerticalContentAlignment="Center" FontWeight="Bold">Battery level: </Label>
+				<Label Padding="10" x:Name="batteryLabel" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+			</Panel>
+			<Panel Margin="3" Width="360" Height="42" Background="#E0E0E0">
+				<Label Padding="10" VerticalContentAlignment="Center" FontWeight="Bold">Firmware version: </Label>
+				<Label Padding="10" x:Name="firmwareLabel" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+			</Panel>
+			<!-- End of title and stats -->
+
+			<!-- Button panel -->
+			<Panel Margin="20,7,20,0">
+				<Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="180, 180" Width="360">
+					<Button x:Name="FirmwareUpdateCheckButton" IsEnabled="False" Click="UpdateCheckButton_Click" Margin="0,0,1,2" Foreground="White" Padding="7" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Update device</Button>
+					<Button x:Name="ForceReconnectButton" IsEnabled="False" Click="ForceReconnectButton_Click" Margin="1,0,0,2" Foreground="White" Padding="7" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Reconnect device</Button>
+					<Button x:Name="FactoryResetButton" IsEnabled="False" Click="FactoryResetButton_Click" Margin="0,0,1,2" Foreground="White" Padding="7" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Factory reset device</Button>
+					<Button x:Name="DiagnosticsButton" IsEnabled="False" Click="DiagnosticsButton_Click" Margin="1,0,0,2" Foreground="White" Padding="7" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Device diagnostics</Button>
+					<Button x:Name="CalibrateButton" IsEnabled="False" Click="CalibrateButton_Click" Margin="0,0,0,2" Foreground="White" Padding="7" Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Begin device calibration</Button>
+					<Button x:Name="OscControlButton" Click="OscControlButton_Click" Foreground="White" Padding="7" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Connect to apps and games (OSC control)</Button>
+				</Grid>
+			</Panel>
+			<!-- End of button panel -->
+
+			<!-- Console panel -->
+			<TextBox x:Name="consoleBox" AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Focusable="False" Width="360" Height="105" Margin="0,8,0,0" FontSize="10"/>
+			<!-- End of console panel-->
+		</StackPanel>
+	</DockPanel>
+</UserControl>
