@@ -5,6 +5,9 @@ namespace QuestEyes_Server.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         ViewModelBase content;
+
+        public StatusViewModel Status { get; }
+
         public MainWindowViewModel()
         {
             Content = Status = new StatusViewModel();
@@ -16,7 +19,10 @@ namespace QuestEyes_Server.ViewModels
             private set => this.RaiseAndSetIfChanged(ref content, value);
         }
 
-        public StatusViewModel Status { get; }
+        public void ReturnToStats()
+        {
+            Content = Status;
+        }
 
         public void FactoryResetPage()
         {

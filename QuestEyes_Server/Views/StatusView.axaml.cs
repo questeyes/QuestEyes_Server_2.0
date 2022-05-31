@@ -5,31 +5,29 @@ using Avalonia.Interactivity;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using ReactiveUI;
+using System.Diagnostics;
 
 namespace QuestEyes_Server.Views
 {
     public partial class StatusView : UserControl
     {
-        public static Subject<string> StatusLabelText { get; set; } = new Subject<string>();
-        public static Subject<IBrush> StatusLabelColour { get; set; } = new Subject<IBrush>();
-        public static Subject<string> BatteryLabelText { get; set; } = new Subject<string>();
-        public static Subject<string> FirmwareLabelText { get; set; } = new Subject<string>();
-        public static TextBox Console { get; set; } = default!;
-        public static Subject<string> ConsoleLog { get; set; } = new Subject<string>();
-        public static Subject<int> ConsoleCaret { get; set; } = new Subject<int>();
-        public static Subject<bool> ButtonState { get; set; } = new Subject<bool>();
-
-        //Colours for status label
-        public static readonly SolidColorBrush red = new();
-        public static readonly SolidColorBrush orange = new();
-        public static readonly SolidColorBrush green = new();
-        public static readonly SolidColorBrush purple = new();
-
         public StatusView()
         {
             InitializeComponent();
-            SetControls();
-            _ = Start();
+            if (!Functions.StatusViewUpdater.IsActive) //if first time creating view...
+            {
+                SetControls();
+                Functions.StatusViewUpdater.SetStatus("searching", null);
+                Functions.StatusViewUpdater.SetBatteryText("Not connected");
+                Functions.StatusViewUpdater.SetFirmwareText("Not connected");
+                Functions.StatusViewUpdater.PrintToConsole("Welcome to the QuestEyes PC App!");
+                _ = Start();
+            } else //if view was made before...
+            {
+                SetControls();
+                Functions.StatusViewUpdater.PrintToConsole("Refreshed information from when stats were hidden.");
+                RefreshInfo();
+            }
         }
 
         public static async Task Start()
@@ -39,46 +37,69 @@ namespace QuestEyes_Server.Views
 
         public void SetControls()
         {
-            Console = consoleBox;
+            Functions.StatusViewUpdater.Console = consoleBox;
 
-            red.Color = Color.FromRgb(255, 0, 0);
-            orange.Color = Color.FromRgb(255, 165, 0);
-            green.Color = Color.FromRgb(25, 145, 71);
-            purple.Color = Color.FromRgb(138, 43, 226);
+            Functions.StatusViewUpdater.red.Color = Color.FromRgb(255, 0, 0);
+            Functions.StatusViewUpdater.orange.Color = Color.FromRgb(255, 165, 0);
+            Functions.StatusViewUpdater.green.Color = Color.FromRgb(25, 145, 71);
+            Functions.StatusViewUpdater.purple.Color = Color.FromRgb(138, 43, 226);
 
             var _statusLabel = statusLabel;
-            _statusLabel.Bind(Label.ContentProperty, StatusLabelText);
-            _statusLabel.Bind(Label.ForegroundProperty, StatusLabelColour);
+            _statusLabel.Bind(Label.ContentProperty, Functions.StatusViewUpdater.StatusLabelText);
+            _statusLabel.Bind(Label.ForegroundProperty, Functions.StatusViewUpdater.StatusLabelColour);
 
             var _batteryLabel = batteryLabel;
-            _batteryLabel.Bind(Label.ContentProperty, BatteryLabelText);
+            _batteryLabel.Bind(Label.ContentProperty, Functions.StatusViewUpdater.BatteryLabelText);
 
             var _firmwareLabel = firmwareLabel;
-            _firmwareLabel.Bind(Label.ContentProperty, FirmwareLabelText);
+            _firmwareLabel.Bind(Label.ContentProperty, Functions.StatusViewUpdater.FirmwareLabelText);
 
             var _console = consoleBox;
-            _console.Bind(TextBox.TextProperty, ConsoleLog);
-            _console.Bind(TextBox.CaretIndexProperty, ConsoleCaret);
+            _console.Bind(TextBox.TextProperty, Functions.StatusViewUpdater.ConsoleLog);
+            _console.Bind(TextBox.CaretIndexProperty, Functions.StatusViewUpdater.ConsoleCaret);
 
             var _FirmwareUpdateCheckButton = FirmwareUpdateCheckButton;
             var _ForceReconnectButton = ForceReconnectButton;
             var _FactoryResetButton = FactoryResetButton;
             var _DiagnosticsButton = DiagnosticsButton;
             var _CalibrateButton = CalibrateButton;
-            _FirmwareUpdateCheckButton.Bind(Button.IsEnabledProperty, ButtonState);
-            _ForceReconnectButton.Bind(Button.IsEnabledProperty, ButtonState);
-            _FactoryResetButton.Bind(Button.IsEnabledProperty, ButtonState);
-            _DiagnosticsButton.Bind(Button.IsEnabledProperty, ButtonState);
-            _CalibrateButton.Bind(Button.IsEnabledProperty, ButtonState);
+            _FirmwareUpdateCheckButton.Bind(Button.IsEnabledProperty, Functions.StatusViewUpdater.ButtonState);
+            _ForceReconnectButton.Bind(Button.IsEnabledProperty, Functions.StatusViewUpdater.ButtonState);
+            _FactoryResetButton.Bind(Button.IsEnabledProperty, Functions.StatusViewUpdater.ButtonState);
+            _DiagnosticsButton.Bind(Button.IsEnabledProperty, Functions.StatusViewUpdater.ButtonState);
+            _CalibrateButton.Bind(Button.IsEnabledProperty, Functions.StatusViewUpdater.ButtonState);
 
-            Functions.StatusViewControls.SetStatus("searching", null);
-            Functions.StatusViewControls.SetBatteryText("Not connected");
-            Functions.StatusViewControls.SetFirmwareText("Not connected");
-            Functions.StatusViewControls.PrintToConsole("Welcome to the QuestEyes PC App!");
+            Functions.StatusViewUpdater.IsActive = true;
         }
+        public static void RefreshInfo()
+        {
+            if (Functions.DeviceConnectivity.Connected)
+            {
+                Functions.StatusViewUpdater.SetStatus("connected", Functions.DeviceConnectivity.DeviceName);
+                Functions.StatusViewUpdater.SetBatteryText("Not connected");
+                Functions.StatusViewUpdater.SetFirmwareText(Functions.DeviceConnectivity.DeviceFirmware);
+                Functions.StatusViewUpdater.EnableButtons();
+            }
+            else if (Functions.DeviceConnectivity.AttemptingConnection)
+            {
+                Functions.StatusViewUpdater.SetStatus("connecting", null);
+                Functions.StatusViewUpdater.SetBatteryText("Not connected");
+                Functions.StatusViewUpdater.SetFirmwareText("Not connected");
+                Functions.StatusViewUpdater.DisableButtons();
+            }
+            else
+            {
+                Functions.StatusViewUpdater.SetStatus("searching...", null);
+                Functions.StatusViewUpdater.SetBatteryText("Not connected");
+                Functions.StatusViewUpdater.SetFirmwareText("Not connected");
+                Functions.StatusViewUpdater.DisableButtons();
+            }
+        }
+
+
         public void ForceReconnectButton_Click(object sender, RoutedEventArgs e)
         {
-            Functions.StatusViewControls.PrintToConsole("Forcing reconnect per user request...");
+            Functions.StatusViewUpdater.PrintToConsole("Forcing reconnect per user request...");
             Functions.DeviceConnectivity.HeartbeatTimer.Stop();
             Functions.DeviceConnectivity.HeartbeatTimer.Close();
             Functions.DeviceConnectivity.CloseCommunicationSocket(Functions.DeviceConnectivity.CommunicationSocket);
