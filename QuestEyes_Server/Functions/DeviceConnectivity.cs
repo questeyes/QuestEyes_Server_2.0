@@ -56,11 +56,11 @@ namespace QuestEyes_Server.Functions
                             ConnectionTimeoutTimer.Close();
                         }
 
-                        Functions.StatusViewControls.PrintToConsole("Searching for device...");
-                        Functions.StatusViewControls.SetStatus("searching", null);
-                        Functions.StatusViewControls.SetBatteryText("Not connected");
-                        Functions.StatusViewControls.SetFirmwareText("Not connected");
-                        Functions.StatusViewControls.DisableButtons();
+                        StatusViewUpdater.PrintToConsole("Searching for device...");
+                        StatusViewUpdater.SetStatus("searching", null);
+                        StatusViewUpdater.SetBatteryText("Not connected");
+                        StatusViewUpdater.SetFirmwareText("Not connected");
+                        StatusViewUpdater.DisableButtons();
                         Url = null;
                         PacketContents = null;
                         PacketContentsFormatted = Array.Empty<string>();
@@ -74,8 +74,8 @@ namespace QuestEyes_Server.Functions
                             AttemptingConnection = true;
                             string hostname = PacketContentsFormatted[1];
                             DeviceIP = PacketContentsFormatted[2];
-                            Functions.StatusViewControls.PrintToConsole("Detected " + hostname + ".");
-                            Functions.StatusViewControls.PrintToConsole("Attempting connection to " + hostname + ".");
+                            StatusViewUpdater.PrintToConsole("Detected " + hostname + ".");
+                            StatusViewUpdater.PrintToConsole("Attempting connection to " + hostname + ".");
                             Url = "ws://" + DeviceIP + ":7580";
                             CommunicationSocket = new ClientWebSocket();
                             await ConnectAsync(Url);
@@ -88,7 +88,7 @@ namespace QuestEyes_Server.Functions
         public static async Task ConnectAsync(string url)
         {
 
-            Functions.StatusViewControls.SetStatus("connecting", null);
+            StatusViewUpdater.SetStatus("connecting", null);
             ConnectionTimeoutTimer = new System.Timers.Timer(10000);
             ConnectionTimeoutTimer.Elapsed += OnConnectionTimeout;
             ConnectionTimeoutTimer.AutoReset = true;
@@ -118,7 +118,7 @@ namespace QuestEyes_Server.Functions
             //connection failed within 10 seconds...
             ConnectionTimeoutTimer.Stop();
             ConnectionTimeoutTimer.Close();
-            Functions.StatusViewControls.PrintToConsole("ERROR: Failed to establish connection to device.");
+            StatusViewUpdater.PrintToConsole("ERROR: Failed to establish connection to device.");
             CommunicationSocket.Abort();
             CommunicationSocket.Dispose();
             AttemptingConnection = false;
@@ -184,19 +184,19 @@ namespace QuestEyes_Server.Functions
                 HeartbeatTimer.Elapsed += OnHeartbeatFailure;
                 HeartbeatTimer.AutoReset = true;
                 HeartbeatTimer.Enabled = true;
-                Functions.StatusViewControls.EnableButtons();
+                StatusViewUpdater.EnableButtons();
                 string[] split = messageText.Split(' ');
                 DeviceName = split[1];
-                Functions.StatusViewControls.SetStatus("connected", DeviceName);
-                Functions.StatusViewControls.PrintToConsole("Successful connection confirmed.");
+                StatusViewUpdater.SetStatus("connected", DeviceName);
+                StatusViewUpdater.PrintToConsole("Successful connection confirmed.");
                 return;
             }
             if (messageText.Contains("FIRMWARE_VER"))
             {
                 string[] split = messageText.Split(' ');
                 DeviceFirmware = split[1];
-                Functions.StatusViewControls.SetFirmwareText(DeviceFirmware);
-                Functions.StatusViewControls.PrintToConsole("Device reported firmware version " + DeviceFirmware + ".");
+                StatusViewUpdater.SetFirmwareText(DeviceFirmware);
+                StatusViewUpdater.PrintToConsole("Device reported firmware version " + DeviceFirmware + ".");
                 return;
             }
             if (messageText.Contains("BATTERY"))
@@ -211,7 +211,7 @@ namespace QuestEyes_Server.Functions
             }
             if (messageText.Contains("EXCESSIVE_FRAME_FAILURE"))
             {
-                Functions.StatusViewControls.PrintToConsole("ERROR: Device reported excessive frame failure, disconnecting...");
+                StatusViewUpdater.PrintToConsole("ERROR: Device reported excessive frame failure, disconnecting...");
                 HeartbeatTimer.Stop();
                 HeartbeatTimer.Close();
                 CloseCommunicationSocket(CommunicationSocket);
@@ -219,13 +219,13 @@ namespace QuestEyes_Server.Functions
             }
             if (messageText.Contains("OTA_MODE_ACTIVE"))
             {
-                Functions.StatusViewControls.PrintToConsole("Device has entered OTA mode.");
-                Functions.StatusViewControls.SetStatus("ota", null);
+                StatusViewUpdater.PrintToConsole("Device has entered OTA mode.");
+                StatusViewUpdater.SetStatus("ota", null);
                 DeviceMode = "OTA";
             }
             else
             {
-                Functions.StatusViewControls.PrintToConsole("Invalid command received from device: " + messageText + ".");
+                StatusViewUpdater.PrintToConsole("Invalid command received from device: " + messageText + ".");
             }
         }
 
@@ -237,7 +237,7 @@ namespace QuestEyes_Server.Functions
         private static void OnHeartbeatFailure(object sender, ElapsedEventArgs e)
         {
             //heartbeat was failed to be received within 10 seconds...
-            Functions.StatusViewControls.PrintToConsole("ERROR: Device timed out, Disconnecting...");
+            StatusViewUpdater.PrintToConsole("ERROR: Device timed out, Disconnecting...");
             HeartbeatTimer.Stop();
             HeartbeatTimer.Close();
             CloseCommunicationSocket(CommunicationSocket);
