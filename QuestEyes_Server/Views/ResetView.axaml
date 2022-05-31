@@ -30,7 +30,7 @@
 				<TextBlock TextWrapping="1">Are you sure you want to do this?</TextBlock>
 			</Label>
 
-			<!-- buttons -->
+			<!-- Buttons -->
 			<Panel>
 				<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="360" Width="360">
 					<Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Grid.Row="0" Margin="0,20,0,0" Foreground="Red" BorderBrush="Red" Background="Orange">HOLD TO RESET</Button>
