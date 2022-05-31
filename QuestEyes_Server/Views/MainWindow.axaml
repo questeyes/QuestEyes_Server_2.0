@@ -11,11 +11,10 @@
         x:Class="QuestEyes_Server.Views.MainWindow"
         Title="QuestEyes PC App"
 		Background="#7E41D9"
-		CanResize="False">
+		CanResize="False"
+		Content="{Binding Content}">
 
 	<Window.DataContext>
 		<vm:MainWindowViewModel/>
 	</Window.DataContext>
-
-	<views:StatusView/>
 </Window>

@@ -83,10 +83,6 @@ namespace QuestEyes_Server.Views
             Functions.DeviceConnectivity.HeartbeatTimer.Close();
             Functions.DeviceConnectivity.CloseCommunicationSocket(Functions.DeviceConnectivity.CommunicationSocket);
         }
-        public void FactoryResetButton_Click(object sender, RoutedEventArgs e)
-        {
-            throw new System.NotSupportedException();
-        }
         public void OscControlButton_Click(object sender, RoutedEventArgs e)
         {
             throw new System.NotSupportedException();
