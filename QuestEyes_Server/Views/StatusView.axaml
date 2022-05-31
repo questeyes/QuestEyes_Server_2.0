@@ -15,7 +15,7 @@
 		<!-- Version info and help button panel -->
 		<Grid DockPanel.Dock="Bottom" ColumnDefinitions="323, 32" Margin="0,0,0,12" HorizontalAlignment="Center">
 			<TextBlock Foreground="White" FontFamily="Microsoft YaHei" FontSize="10" Grid.Column="0" VerticalAlignment="Center" Text="{Binding ServerVersion, Mode=OneWay}"/>
-			<Button x:Name="InformationButton" Click="InformationButton_Click" Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Width="35">
+			<Button x:Name="InformationButton" Command="{Binding $parent[Window].DataContext.InformationPage}" Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Width="35">
 				<Image Source="/Assets/information.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 			</Button>
 		</Grid>

@@ -28,5 +28,10 @@ namespace QuestEyes_Server.ViewModels
         {
             Content = new ResetViewModel();
         }
+
+        public void InformationPage()
+        {
+            Content = new InformationViewModel();
+        }
     }
 }
