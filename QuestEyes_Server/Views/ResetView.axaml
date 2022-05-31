@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:QuestEyes_Server.ViewModels"
+			 mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="525"
+			 Background="#7E41D9"
+             x:Class="QuestEyes_Server.Views.ResetView">
+
+	<UserControl.DataContext>
+		<vm:ResetViewModel/>
+	</UserControl.DataContext>
+
+	<DockPanel HorizontalAlignment="Center">
+		<StackPanel HorizontalAlignment="Center">
+			<!-- Title -->
+			<Label FontFamily="Microsoft YaHei" FontWeight="Bold" FontSize="27" Foreground="White" Width="400" Padding="20" HorizontalContentAlignment="Center">QuestEyes</Label>
+
+			<!-- Image -->
+			<Panel Width="230" Height="230">
+				<Image Source="/Assets/warning.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+			</Panel>
+			
+			<!-- Page title -->
+			<Label FontFamily="Microsoft YaHei" FontWeight="Bold" FontSize="18" Foreground="White" Width="400" Padding="20" HorizontalContentAlignment="Center">Factory reset device</Label>
+			<Label FontFamily="Microsoft YaHei" FontSize="12" Foreground="White" Width="400" HorizontalContentAlignment="Center">
+				<TextBlock TextWrapping="1">You are about to completely factory reset your QuestEyes device!</TextBlock>
+			</Label>
+			<Label FontFamily="Microsoft YaHei" FontSize="12" Foreground="White" Width="400" HorizontalContentAlignment="Center">
+				<TextBlock TextWrapping="1">Are you sure you want to do this?</TextBlock>
+			</Label>
+
+			<!-- buttons -->
+			<Panel>
+				<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="360" Width="360">
+					<Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Grid.Row="0" Margin="0,20,0,0" Foreground="Red" BorderBrush="Red" Background="Orange">HOLD TO RESET</Button>
+					<Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Grid.Row="1" Margin="0,5,0,0" Foreground="White">Go back</Button>
+				</Grid>
+			</Panel>
+		</StackPanel>
+	</DockPanel>
+</UserControl>

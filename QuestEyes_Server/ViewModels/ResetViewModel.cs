@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace QuestEyes_Server.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class ResetViewModel : ViewModelBase
     {
     }
 }
